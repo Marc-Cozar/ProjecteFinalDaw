@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
+use App\Models\ProductHistoric;
+use Exception;
+use Log;
 
 class LandingController extends Controller
 {
@@ -23,5 +27,21 @@ class LandingController extends Controller
         dd($output);
         // close curl resource to free up system resources
         curl_close($ch);
+    }
+
+    public function setPrice(Request $request) {
+        try {
+            $product = Product::find($request->id);
+
+            if($product->price != $request->price) {
+                ProductHistoric::create(['product_id' => $product->id, 'old_price' => $product->price, 'new_price' => $request->price]);
+                $product->update(['price' => $request->price]);
+            }
+            
+            return response()->json('ok');
+        } catch (Exception $e) {
+            Log::info($e->getMessage());
+            return response()->json('error');
+        }
     }
 }
