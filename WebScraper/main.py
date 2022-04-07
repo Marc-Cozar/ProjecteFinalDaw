@@ -24,6 +24,7 @@ web = mycursor2.fetchall()
 # Instantiate options
 opts = Options()
 # opts.add_argument("--headless")
+opts.add_argument('--log-level=1')
 opts.binary_location = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
 
 # Set the location of the webdriver
@@ -44,10 +45,10 @@ for x in products:
             value = span.get_text()
             parsedValue = value.replace('€', '').replace('.', '').replace(',', '.')
             finalPrice = float(parsedValue)
-
             resp = requests.post('http://127.0.0.1:8000/api/set-price', {'id': x[1], 'price': finalPrice})
             break
-        except:
+        except Exception as e:
+            print(e)
             pass
 
     driver.close()
