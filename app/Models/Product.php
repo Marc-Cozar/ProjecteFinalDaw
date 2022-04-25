@@ -9,5 +9,9 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'price'];
+    protected $fillable = ['name'];
+
+    public function web_prices(){
+        return $this->belongsToMany(Web::class)->withPivot('price');
+    }
 }

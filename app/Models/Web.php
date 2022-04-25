@@ -9,4 +9,8 @@ class Web extends Model
 {
     use HasFactory;
     protected $fillable = ['name', 'url'];
+
+    public function products_prices(){
+        return $this->belongsToMany(Product::class)->withPivot('price');
+   }
 }

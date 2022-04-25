@@ -17,6 +17,8 @@ class CreateProductPriceHistoric extends Migration
             $table->id();
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products');
+            $table->unsignedBigInteger('web_id');
+            $table->foreign('web_id')->references('id')->on('webs');
             $table->float('old_price');
             $table->float('new_price');
             $table->timestamps();

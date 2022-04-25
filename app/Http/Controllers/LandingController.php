@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Web;
 use App\Models\ProductHistoric;
 use Exception;
 use Log;
@@ -11,31 +12,25 @@ use Log;
 class LandingController extends Controller
 {
     public function test() {
+        // dd(Product::find(1)->web_prices()->where('web_id', 1)->first()->pivot);
+        foreach(Web::find(1)->products_prices as $test) {
+            dd($test->pivot->price);
+        }
        
-        $ch = curl_init();
-
-        // set url
-        curl_setopt($ch, CURLOPT_URL, "https://www.google.com/");
-
-        //return the transfer as a string
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
-
-        // $output contains the output string
-        $output = curl_exec($ch);
-
-        dd($output);
-        // close curl resource to free up system resources
-        curl_close($ch);
     }
 
     public function setPrice(Request $request) {
         try {
             $product = Product::find($request->id);
 
-            if($product->price != $request->price) {
-                ProductHistoric::create(['product_id' => $product->id, 'old_price' => $product->price, 'new_price' => $request->price]);
-                $product->update(['price' => $request->price]);
+            $old_price = $product->web_prices()->where('web_id', $request->web_id)->first();
+
+            if(!$old_price || $old_price->price != $request->price) {
+                $product->web_prices()->detach($request->web_id);
+                $new_price = $product->web_prices()->attach($request->web_id, ['price' => $request->price]);
+                if($old_price && $old_price->pivot->price != $product->web_prices()->where('web_id', $request->web_id)->first()->pivot->price) {
+                    ProductHistoric::updateOrCreate(['product_id' => $product->id, 'old_price' => $old_price->pivot->price, 'new_price' => $request->price, 'web_id' => $request->web_id]);
+                }   
             }
             
             return response()->json('ok');
