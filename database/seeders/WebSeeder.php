@@ -16,7 +16,7 @@ class WebSeeder extends Seeder
     {
         Web::create(['name' => 'PcComponentes', 'url' => 'https://www.pccomponentes.com/buscar/?query=']);
         Web::create(['name' => 'CoolMod', 'url' => 'https://www.coolmod.com/#/dffullscreen/query=']);
-        Web::create(['name' => 'Amazon', 'url' => 'www.amazon.com']);
-        Web::create(['name' => 'PcBox', 'url' => 'www.pcbox.com']);
+        Web::create(['name' => 'Amazon', 'url' => 'https://www.amazon.es/s?k=']);
+        Web::create(['name' => 'BackMarket', 'url' => 'https://www.backmarket.es/search?q=']);
     }
 }
