@@ -14,3 +14,6 @@ use App\Http\Controllers\LandingController;
 |
 */
 Route::get('/', [LandingController::class,'test'])->name('test');
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
