@@ -5,6 +5,7 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Log;
 use Illuminate\Queue\SerializesModels;
 
 class NotificationMail extends Mailable
@@ -35,7 +36,8 @@ class NotificationMail extends Mailable
      */
     public function build()
     {
-        return $this->from('projectem12@gmail.com')
+        return $this->subject('New price change in your favorites!')
+                    ->from('projectem12@outlook.es', 'PriceTic')
                     ->view('mails.notification');
     }
 }

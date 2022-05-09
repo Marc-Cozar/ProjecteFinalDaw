@@ -66,7 +66,7 @@ def getScraping(web, product):
                     print(e)
                     pass
         elif "BackMarket" in web[0]:
-            for price in soup.select_one('.text-black.font-body.text-2.leading-2.font-bold'):    
+            for price in soup.select_one('.body-2-bold.text-black'):    
                 try:
                     savePrice(price, product, web)
                     break
