@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\Product;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\LandingController;
@@ -25,5 +26,7 @@ Auth::routes();
 Route::middleware(['is_admin'])->group(function () {
     Route::get('/profile', [CustomerController::class, 'index'])->name('profile');
     // Route::post('/products/{product}/review', [Front::class,'store'])->name('front.reviews.store');
-
 });
+
+
+Route::get('/select2', Product::class)->name('select2');

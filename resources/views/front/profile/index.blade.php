@@ -4,7 +4,7 @@
     {{-- <h1>{{Auth::guard('customer')->user()}}</h1> --}}
 
     <div class="container">
-        <hr class="mt-0 mb-4">
+        <p class="mt-0 mb-4"></p>
         <div class="row">
             <div class="col-xl-4">
                 <div class="card mb-4 mb-xl-0">
@@ -41,19 +41,28 @@
                                 </div>
                                 <div class="mb-3 col-md-3">
                                     <label class="small mb-1">Password</label>
-                                    <input type="password" readonly class="form-control" placeholder="Password" value="********">
+                                    <input type="password" readonly class="form-control" placeholder="Password"
+                                        value="********">
                                 </div>
                                 <div class="mb-3 col-md-3">
-                                    <label class="small mb-1 invisible">button</label>
+                                    <label class="small mb-1" style="visibility:hidden">Password</label>
                                     <button class="btn btn-primary float-right" type="button">Change password</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Dissable product alerts</label>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-
 @endsection
