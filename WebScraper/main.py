@@ -25,10 +25,10 @@ webs = mycursor2.fetchall()
 opts = Options()
 # opts.add_argument("--headless")
 opts.add_argument('--log-level=1')
-opts.binary_location = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
+opts.binary_location = "C:\Program Files\Google\Chrome\Application\chrome.exe"
 
 # Set the location of the webdriver
-chrome_driver = "chromedriver.exe"
+chrome_driver = "chromedriver_101.exe"
 
 def getScraping(web, product):
     try:
