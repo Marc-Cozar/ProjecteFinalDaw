@@ -10,27 +10,13 @@
                     @endforeach
                 </select>
 
-
-
                 {{-- <div id="select2" class="d-flex justify-content-center px-5">
                     <div class="search"> <input type="text" class="search-input" placeholder="Search..."
                             name=""> <a href="#" class="search-icon"> <i class="fa fa-search"></i> </a> </div>
                 </div> --}}
             </div>
         </div>
-        <div class="col-md-8 mx-auto mt-3">
-            <div class="card">
-                <div class="card-header">
-                    Quote
-                </div>
-                <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                        <p>A well-known quote, contained in a blockquote element.</p>
-                        <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source
-                                Title</cite></footer>
-                    </blockquote>
-                </div>
-            </div>
+        <div id="loadProducts">
         </div>
     </div>
 </div>
@@ -58,9 +44,98 @@
         $('#select2').on('change', function(e) {
             let value = $('#select2').select2('val');
             let text = $('#select2 option:selected').text();
+            // console.log(value);
+
+            $('#loadProducts').empty();
+            //send request to get products
+            $.ajax({
+                url: '{{ route('select2.product.prices') }}',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "productId": value,
+                },
+                type: "post",
+                cache: false,
+                success: function(response) {
+                    // console.log(typeof(response));
+                    response = JSON.parse(response);
+                    // console.log(typeof(response));
+
+
+                    Object.keys(response).forEach(function(key) {
+
+                        $('#loadProducts').append(
+                            '<div class="col-md-8 mx-auto mt-3">' +
+                            '<div class="card">' +
+                            '<div class="card-header">' +
+                            response[key].product + '</div>' +
+                            '<div class="card-body">' +
+                            '<blockquote class="blockquote mb-0">' +
+                            '<p>A well-known quote, contained in a blockquote element.</p>' +
+                            '<footer class="blockquote-footer">' + response[key]
+                            .webName + '</footer >' +
+                            '</blockquote>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>'
+                        ); <
+                        div class = "container" >
+                            <
+                            div class = "row" >
+                            <
+                            div class = "col" > Column < /div> <
+                            div class = "col" > Column < /div> <
+                            div class = "w-100" > < /div> <
+                            div class = "col" > Column < /div> <
+                            div class = "col" > Column < /div> <
+                            /div> <
+                            /div>
+
+                    });
+
+
+                    // data.forEach(obj => {
+                    //     Object.entries(obj).forEach(([key, value]) => {
+                    //         console.log(`${key} ${value}`);
+                    //     });
+                    //     console.log('-------------------');
+                    // });
+
+                    // $.each(response, function(key, value) {
+                    //     console.log(key + ": " + value);
+                    // });
+
+
+                    // Object.entries(response).forEach(entry => {
+                    //     console.log(entry);
+                    //     const [key, value] = entry;
+                    //     // console.log(key, value);
+                    // });
+
+
+
+
+
+
+
+
+
+
+
+
+
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    console.log(xhr);
+                }
+            });
             // @this.set('selected', text)
             // console.log(text)
         })
+
+
+
+
     })
 
 

@@ -18,7 +18,7 @@ class LandingController extends Controller
 {
     public function test()
     {
-        dd(bcrypt('hola'));
+        dd('entra FUNCTION');
         // dd(Product::find(1)->web_prices()->where('web_id', 1)->first()->pivot);
         foreach (Web::find(1)->products_prices as $test) {
             dd($test->pivot->price);
@@ -55,5 +55,24 @@ class LandingController extends Controller
             Log::channel('error_info')->info($e->getMessage());
             return response()->json('error');
         }
+    }
+
+    public function displayPricesProduct(Request $request)
+    {
+        $productPrices = [];
+        // dd(count(Product::find($request->productId)->web_prices));
+        // dd(Product::find(1)->web_prices()->where('web_id', 1)->first()->pivot);
+        $productName = Product::find($request->productId);
+        foreach (Product::find($request->productId)->web_prices as $item) {
+            $webName = Web::find($item->pivot->web_id)->name;
+            // dd($webName);
+            // dd($test->pivot->price);
+            array_push($productPrices, [
+                'product' => $productName->name,
+                'webName' => $webName ?? NULL,
+                'price' => $item->pivot->price
+            ]);
+        }
+        return json_encode($productPrices) ?? NULL;
     }
 }

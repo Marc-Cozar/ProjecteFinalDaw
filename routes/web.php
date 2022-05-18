@@ -4,6 +4,7 @@ use App\Http\Livewire\Product;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerController;
 
 /*
@@ -30,3 +31,4 @@ Route::middleware(['is_admin'])->group(function () {
 
 
 Route::get('/select2', Product::class)->name('select2');
+
