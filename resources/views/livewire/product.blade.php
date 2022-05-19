@@ -15,9 +15,9 @@
                 @endif
             @endif
             <div class="card p-4 mt-3">
-                <h3 class="heading mt-5 text-center">Hi! How can we help You?</h3>
+                <h3 class="heading mt-5 text-center">PRODUCT PRICE ALERT</h3>
                 <select id="select2" class="form-select">
-                    <option value="">Cercar un producte...</option>
+                    <option value="">Search product...</option>
                     @foreach ($products as $product)
                         <option value="{{ $product->id }}">{{ $product->name }}</option>
                     @endforeach
@@ -58,7 +58,7 @@
             let value = $('#select2').select2('val');
             let text = $('#select2 option:selected').text();
 
-            // console.log(value);
+            console.log('onchange');
 
             $('#loadProducts').empty();
             //send request to get products
@@ -71,15 +71,16 @@
                 type: "post",
                 cache: false,
                 success: function(response) {
-                    response = JSON.parse(response);
 
+                    suscribed = JSON.parse(response[0]);
+                    response = JSON.parse(response[1]);
                     Object.keys(response).forEach(function(key) {
                         $('#loadProducts').append(
                             '<div class="col-md-8 mx-auto mt-3">' +
                             '<div class="card">' +
                             '<div class="card-header">' +
                             '<div class="form-check form-switch">' +
-                            '<input class="form-check-input" type="checkbox" role="switch" id="' +
+                            '<input class="form-check-input" type="checkbox" id="' +
                             response[key].id + '_' + response[key].webId +
                             '">' + //checked
                             '<label class="form-check-label" for="switch_' +
@@ -99,7 +100,10 @@
                             '<div class = "col" >' + //
                             '<blockquote class="blockquote mb-0 text-end">' +
                             '<p>' + response[key].price + ' €</p>' +
-                            '<footer><button type="button" class="btn btn-primary btn-sm">BUY PRODUCT</button></footer >' +
+                            '<footer><a href="' + response[key].webUrl +
+                            response[
+                                key].product +
+                            '"target="_blank"><button type="button" class="btn btn-primary btn-sm">BUY PRODUCT</button></a></footer >' +
                             '</blockquote>' +
                             '</div>' + //
                             '</div>' + //
@@ -109,6 +113,19 @@
                             '</div>'
                         );
                     });
+
+                    // $("#1_1");
+                    if (suscribed.length > 0) {
+                        Object.keys(suscribed).forEach(function(key) {
+
+                            // console.log(suscribed[key].product_id + '_' + suscribed[
+                            //     key].web_id);
+                            // $('#' + suscribed[key].product_id + '_' + suscribed[key]
+                            //     .web_id).bootstrapSwitch('state', true);
+                            // console.log('atribute work');
+                        });
+                    }
+
 
                     document.querySelectorAll('.form-check-input').forEach(item => {
                         item.addEventListener('change', function(e) {

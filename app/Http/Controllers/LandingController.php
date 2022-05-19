@@ -67,18 +67,20 @@ class LandingController extends Controller
         // dd(Product::find(1)->web_prices()->where('web_id', 1)->first()->pivot);
         $productName = Product::find($request->productId);
         foreach (Product::find($request->productId)->web_prices as $item) {
-            $webName = Web::find($item->pivot->web_id)->name;
+            $web = Web::find($item->pivot->web_id);
             // dd($item->pivot->web_id);
             // dd($test->pivot->price);
             array_push($productPrices, [
                 'id' => $productName->id,
                 'product' => $productName->name,
                 'webId' => $item->pivot->web_id,
-                'webName' => $webName ?? NULL,
+                'webName' => $web->name ?? NULL,
+                'webUrl' => $web->url ?? NULL,
                 'price' => $item->pivot->price
             ]);
         }
-        return json_encode($productPrices) ?? NULL;
+        $suscriptions = Auth::user()->suscriptions->where('product_id', $request->productId);
+        return [json_encode($suscriptions), json_encode($productPrices) ?? NULL];
     }
 
     public function suscribe(Request $request)
@@ -94,17 +96,18 @@ class LandingController extends Controller
                     [
                         'user_id' => Auth::user()->id,
                         'web_id' => $request->webId,
-                        'product_id' => $request->productId
+                        'product_id' => $request->productId,
+                        'active' => 1
                     ]
                 );
                 $msg = ['Suscribed successfully.', 'success'];
-            } else if (count(UserEmailNotification::where('user_id', Auth::user()->id)->get()) < 1) {
+                // } else if (count(UserEmailNotification::where(['user_id', 'active'], '=', [2, 1])->get()) < 1) {
+            } else if (count(UserEmailNotification::select("*")->where([['user_id', '=', Auth::user()->id], ['active', '=', 1]])->get()) < 1) {
                 UserEmailNotification::updateOrCreate(
                     [
                         'user_id' => Auth::user()->id,
                         'web_id' => $request->webId,
                         'product_id' => $request->productId,
-                        'active' => 1
                     ],
                     [
                         'user_id' => Auth::user()->id,
@@ -128,22 +131,20 @@ class LandingController extends Controller
     {
         if (Auth::check()) {
             try {
-                UserEmailNotification::update(
+                UserEmailNotification::where(
                     [
-                        'user_id' => Auth::user()->id,
-                        'web_id' => $request->webId,
-                        'product_id' => $request->productId,
-                    ],
+                        ['user_id', '=', Auth::user()->id],
+                        ['web_id', '=', $request->webId],
+                        ['product_id', '=', $request->productId]
+                    ]
+                )->update(
                     [
-                        'user_id' => Auth::user()->id,
-                        'web_id' => $request->webId,
-                        'product_id' => $request->productId,
                         'active' => 0,
                     ]
                 );
+
                 $msg = ['Unsuscribed successfully.', 'success'];
             } catch (\Throwable $th) {
-
                 $msg = ['ERROR', 'danger'];
             }
         }

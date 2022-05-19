@@ -24,7 +24,7 @@ Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::middleware(['is_admin'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [CustomerController::class, 'index'])->name('profile');
     // Route::post('/products/{product}/review', [Front::class,'store'])->name('front.reviews.store');
 });

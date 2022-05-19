@@ -57,6 +57,34 @@
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
                             <label class="form-check-label" for="flexSwitchCheckDefault">Dissable product alerts</label>
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="form-check form-switch"><input class="form-check-input" type="checkbox"
+                                            id="1_1"><label class="form-check-label" for="switch_1">Suscribe</label></div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col">
+                                                <blockquote class="blockquote mb-0">
+                                                    <p>NVIDIA GeForce RTX 3070</p>
+                                                    <footer class="blockquote-footer">PcComponentes</footer>
+                                                </blockquote>
+                                            </div>
+                                            <div class="col">
+                                                <blockquote class="blockquote mb-0 text-end">
+                                                    <p>1919 €</p>
+                                                    <footer><a
+                                                            href="https://www.pccomponentes.com/buscar/?query=NVIDIA GeForce RTX 3070"
+                                                            target="_blank"><button type="button"
+                                                                class="btn btn-primary btn-sm">BUY PRODUCT</button></a>
+                                                    </footer>
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserEmailNotification extends Model
 {
-    protected $fillable = ['user_id', 'web_id', 'product_id'];
+    protected $fillable = ['user_id', 'web_id', 'product_id', 'active'];
     protected $table = "user_email_notification";
     use HasFactory;
 }
