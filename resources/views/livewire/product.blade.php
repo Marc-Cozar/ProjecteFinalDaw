@@ -1,6 +1,19 @@
 <div class="row d-flex justify-content-center">
     <div wire:ignore>
         <div class="col-md-12">
+            <div id="ajax_message">
+            </div>
+            @if (Session::has('retCode'))
+                @if (Session::get('retCode') == 1)
+                    <div class="alert alert-danger">
+                        {{ Session::get('msj') }}
+                    </div>
+                @else
+                    <div class="alert alert-success">
+                        {{ Session::get('msj') }}
+                    </div>
+                @endif
+            @endif
             <div class="card p-4 mt-3">
                 <h3 class="heading mt-5 text-center">Hi! How can we help You?</h3>
                 <select id="select2" class="form-select">
@@ -44,6 +57,7 @@
         $('#select2').on('change', function(e) {
             let value = $('#select2').select2('val');
             let text = $('#select2 option:selected').text();
+
             // console.log(value);
 
             $('#loadProducts').empty();
@@ -57,73 +71,110 @@
                 type: "post",
                 cache: false,
                 success: function(response) {
-                    // console.log(typeof(response));
                     response = JSON.parse(response);
-                    // console.log(typeof(response));
-
 
                     Object.keys(response).forEach(function(key) {
-
                         $('#loadProducts').append(
                             '<div class="col-md-8 mx-auto mt-3">' +
                             '<div class="card">' +
                             '<div class="card-header">' +
-                            response[key].product + '</div>' +
+                            '<div class="form-check form-switch">' +
+                            '<input class="form-check-input" type="checkbox" role="switch" id="' +
+                            response[key].id + '_' + response[key].webId +
+                            '">' + //checked
+                            '<label class="form-check-label" for="switch_' +
+                            response[key].id + '">Suscribe</label>' +
+                            '</div>' +
+                            '</div>' +
                             '<div class="card-body">' +
+                            '<div class = "container" >' + //
+                            '<div class = "row" >' + //
+                            '<div class = "col" >' + //
                             '<blockquote class="blockquote mb-0">' +
-                            '<p>A well-known quote, contained in a blockquote element.</p>' +
+                            '<p>' + response[key].product + '</p>' +
                             '<footer class="blockquote-footer">' + response[key]
                             .webName + '</footer >' +
                             '</blockquote>' +
                             '</div>' +
+                            '<div class = "col" >' + //
+                            '<blockquote class="blockquote mb-0 text-end">' +
+                            '<p>' + response[key].price + ' €</p>' +
+                            '<footer><button type="button" class="btn btn-primary btn-sm">BUY PRODUCT</button></footer >' +
+                            '</blockquote>' +
+                            '</div>' + //
+                            '</div>' + //
+                            '</div>' + //
+                            '</div>' + //
                             '</div>' +
                             '</div>'
-                        ); <
-                        div class = "container" >
-                            <
-                            div class = "row" >
-                            <
-                            div class = "col" > Column < /div> <
-                            div class = "col" > Column < /div> <
-                            div class = "w-100" > < /div> <
-                            div class = "col" > Column < /div> <
-                            div class = "col" > Column < /div> <
-                            /div> <
-                            /div>
-
+                        );
                     });
 
+                    document.querySelectorAll('.form-check-input').forEach(item => {
+                        item.addEventListener('change', function(e) {
 
-                    // data.forEach(obj => {
-                    //     Object.entries(obj).forEach(([key, value]) => {
-                    //         console.log(`${key} ${value}`);
-                    //     });
-                    //     console.log('-------------------');
+                            id = $(this).attr("id");
+                            productWebId = $(this).attr("id").split("_");
+
+                            routeUrl = this.checked ?
+                                '{{ route('select2.product.suscribe') }}' :
+                                '{{ route('select2.product.unsuscribe') }}'
+
+                            $.ajax({
+                                url: routeUrl,
+                                data: {
+                                    "_token": "{{ csrf_token() }}",
+                                    "productId": productWebId[0],
+                                    "webId": productWebId[1],
+                                },
+                                type: "post",
+                                cache: false,
+                                success: function(response) {
+                                    if (response[1] ==
+                                        'danger') {
+                                        $('#ajax_message')
+                                            .addClass(
+                                                "alert alert-danger"
+                                            ).text(response[
+                                                0]);
+                                        setTimeout(function() {
+                                            $('#ajax_message')
+                                                .removeClass(
+                                                    "alert alert-danger"
+                                                )
+                                                .empty();
+                                        }, 2000);
+                                    } else {
+                                        $('#ajax_message')
+                                            .addClass(
+                                                "alert alert-success"
+                                            ).text(response[
+                                                0]);
+
+                                        setTimeout(function() {
+                                            $('#ajax_message')
+                                                .delay(
+                                                    800)
+                                                .removeClass(
+                                                    "alert alert-success"
+                                                )
+                                                .empty();
+                                        }, 2000);
+                                    }
+                                    console.log(response);
+                                },
+                                error: function(xhr, ajaxOptions,
+                                    thrownError) {
+                                    console.log(xhr);
+                                }
+                            });
+                        })
+                    })
+
+
+                    // $("input.form-check-input").on('change', function(e) {
+                    //     console.log($(this).attr("id"));
                     // });
-
-                    // $.each(response, function(key, value) {
-                    //     console.log(key + ": " + value);
-                    // });
-
-
-                    // Object.entries(response).forEach(entry => {
-                    //     console.log(entry);
-                    //     const [key, value] = entry;
-                    //     // console.log(key, value);
-                    // });
-
-
-
-
-
-
-
-
-
-
-
-
-
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     console.log(xhr);
@@ -131,10 +182,8 @@
             });
             // @this.set('selected', text)
             // console.log(text)
-        })
-
-
-
+        });
+        console.log('working');
 
     })
 

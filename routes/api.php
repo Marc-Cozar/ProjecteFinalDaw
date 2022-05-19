@@ -16,4 +16,3 @@ use App\Http\Controllers\LandingController;
 */
 
 Route::post('/set-price', [LandingController::class, 'setPrice'])->name('setPrice');
-Route::post('/select2/product', [LandingController::class, 'displayPricesProduct'])->name('select2.product.prices');

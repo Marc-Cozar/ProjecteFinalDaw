@@ -32,3 +32,8 @@ Route::middleware(['is_admin'])->group(function () {
 
 Route::get('/select2', Product::class)->name('select2');
 
+//user suscribe
+Route::post('/select2/product/suscribe', [LandingController::class, 'suscribe'])->name('select2.product.suscribe');
+Route::post('/select2/product/unsuscribe', [LandingController::class, 'unsuscribe'])->name('select2.product.unsuscribe');
+
+Route::post('/select2/product', [LandingController::class, 'displayPricesProduct'])->name('select2.product.prices');

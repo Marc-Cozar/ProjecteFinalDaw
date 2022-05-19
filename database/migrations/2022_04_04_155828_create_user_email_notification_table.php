@@ -21,6 +21,7 @@ class CreateUserEmailNotificationTable extends Migration
             $table->foreign('web_id')->references('id')->on('webs');
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products');
+            $table->tinyInteger('active')->default(0);
             $table->timestamps();
         });
     }

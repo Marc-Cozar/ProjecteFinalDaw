@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 // use Mail;
+use Auth;
 use Exception;
+use Throwable;
 use App\Models\Web;
 use App\Models\User;
 use App\Models\Product;
@@ -13,6 +15,7 @@ use App\Models\ProductHistoric;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use App\Models\UserEmailNotification;
 
 class LandingController extends Controller
 {
@@ -65,14 +68,87 @@ class LandingController extends Controller
         $productName = Product::find($request->productId);
         foreach (Product::find($request->productId)->web_prices as $item) {
             $webName = Web::find($item->pivot->web_id)->name;
-            // dd($webName);
+            // dd($item->pivot->web_id);
             // dd($test->pivot->price);
             array_push($productPrices, [
+                'id' => $productName->id,
                 'product' => $productName->name,
+                'webId' => $item->pivot->web_id,
                 'webName' => $webName ?? NULL,
                 'price' => $item->pivot->price
             ]);
         }
         return json_encode($productPrices) ?? NULL;
+    }
+
+    public function suscribe(Request $request)
+    {
+        if (Auth::check()) {
+            if (Auth::user()->is_premium) {
+                UserEmailNotification::updateOrCreate(
+                    [
+                        'user_id' => Auth::user()->id,
+                        'web_id' => $request->webId,
+                        'product_id' => $request->productId
+                    ],
+                    [
+                        'user_id' => Auth::user()->id,
+                        'web_id' => $request->webId,
+                        'product_id' => $request->productId
+                    ]
+                );
+                $msg = ['Suscribed successfully.', 'success'];
+            } else if (count(UserEmailNotification::where('user_id', Auth::user()->id)->get()) < 1) {
+                UserEmailNotification::updateOrCreate(
+                    [
+                        'user_id' => Auth::user()->id,
+                        'web_id' => $request->webId,
+                        'product_id' => $request->productId,
+                        'active' => 1
+                    ],
+                    [
+                        'user_id' => Auth::user()->id,
+                        'web_id' => $request->webId,
+                        'product_id' => $request->productId,
+                        'active' => 1
+                    ]
+                );
+                $msg = ['Suscribed successfully.', 'success'];
+            } else {
+                $msg = ['You cannot subscribe to more than 1 product. To subscribe to more than one product, you need to be premium', 'danger'];
+            }
+        } else {
+            $msg = ['You can\'t suscribe. You have not logged in', 'danger'];
+        }
+
+        return $msg;
+    }
+
+    public function unsuscribe(Request $request)
+    {
+        if (Auth::check()) {
+            try {
+                UserEmailNotification::update(
+                    [
+                        'user_id' => Auth::user()->id,
+                        'web_id' => $request->webId,
+                        'product_id' => $request->productId,
+                    ],
+                    [
+                        'user_id' => Auth::user()->id,
+                        'web_id' => $request->webId,
+                        'product_id' => $request->productId,
+                        'active' => 0,
+                    ]
+                );
+                $msg = ['Unsuscribed successfully.', 'success'];
+            } catch (\Throwable $th) {
+
+                $msg = ['ERROR', 'danger'];
+            }
+        }
+
+
+        return $msg;
     }
 }
