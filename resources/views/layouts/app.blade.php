@@ -31,19 +31,29 @@
     </script>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        body {
+            height: 100%;
+            background-image: url('/img/background.png');
+            background-repeat: no-repeat;
+        }
+
+    </style>
 </head>
 
 <body>
     {{-- {{ dd(bcrypt('marc1234')) }} --}}
-    <div id="app">
-        <x-Header_nav />
+    <div id="app" background>
+        <div class="bg">
+            <x-Header_nav />
 
-        {{-- <main class="py-4"> --}}
-        @yield('content')
-        {{-- </main> --}}
+            {{-- <main class="py-4"> --}}
+            @yield('content')
+            {{-- </main> --}}
+        </div>
+        @stack('styles')
+        @stack('scripts')
     </div>
-    @stack('styles')
-    @stack('scripts')
 </body>
 
 </html>

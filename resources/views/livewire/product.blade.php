@@ -203,33 +203,4 @@
         console.log('working');
 
     })
-
-
-
-    // var xhttp = new XMLHttpRequest();
-    // var textOptions = "";
-    // var arrayOpenData;
-
-    // xhttp.open("GET", 'https://opendata.reus.cat/api/3/action/datastore_search_sql?sql=SELECT * from "79b0c5e2-d62c-4dd1-80cf-dd52ad543350"', true);
-    // xhttp.send();
-
-    // xhttp.onreadystatechange = function() {
-    //     if (this.readyState == 4 && this.status == 200) {
-    //     	arrayOpenData = JSON.parse(this.responseText);
-
-    //     	for (var i = 0; i < Object.keys(arrayOpenData["result"]["records"]).length; i++) {
-    //     		textOptions += "<option id=" + i + ">" + arrayOpenData["result"]["records"][i]["NOM CARRER"] + " (" + arrayOpenData["result"]["records"][i]["TIPUS VIA"] + ")" +"<br></option>";
-    //     	}
-    //     	 document.getElementById("select").innerHTML = textOptions ;
-    //     }
-    // };
-
-    // function getPostalCode(){
-    // 		var codeName = document.getElementById("select").value;
-    // 		for (var i = 0; i < Object.keys(arrayOpenData["result"]["records"]).length; i++) {
-    //     		if(arrayOpenData["result"]["records"][i]["NOM CARRER"]+ " (" + arrayOpenData["result"]["records"][i]["TIPUS VIA"] + ")" == codeName) {
-    //     			document.getElementById("divGetTxt").innerHTML = arrayOpenData["result"]["records"][i]["CODI POSTAL"];
-    //     		}
-    //     	}
-    // }
 </script>
